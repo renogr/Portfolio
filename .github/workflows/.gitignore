@@ -1,0 +1,9 @@
+*.xml
+raw/
+flex/
+site/
+demo/
+__pycache__/
+*.pyc
+.venv/
+.env
