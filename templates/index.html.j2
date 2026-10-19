@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="{{ t.html_lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ cfg.brand_name }}</title>
+<meta name="description" content="{{ cfg.tagline }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#090a0c; --card:#111317; --card2:#15181d; --line:#1f232a; --line2:#2a2f37;
+  --text:#eceef1; --muted:#8a919c; --faint:#5c636e;
+  --pos:#2fd27a; --neg:#ff5468; --accent:#4c8dff; --bench:#8a919c; --bt:#f5b14c;
+  --radius:14px;
+  --num:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);
+  font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 16px 64px}
+a{color:var(--accent)}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .neu{color:var(--muted)}
+
+/* шапка */
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding-bottom:24px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:14px}
+.mark{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-weight:700;font-size:17px;
+  background:linear-gradient(135deg,#1c2433,#0f1420);border:1px solid var(--line2);color:#cfe0ff;letter-spacing:-.02em}
+.brand h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.02em}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);
+  border:1px solid var(--line2);border-radius:999px;padding:7px 13px;background:var(--card)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pos);box-shadow:0 0 0 4px rgba(47,210,122,.15)}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 8px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.kpi .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi .v{font-size:28px;font-weight:600;margin-top:6px;line-height:1.1}
+
+/* секции и карточки */
+h2{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin:40px 0 14px;display:flex;align-items:center;gap:12px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px}
+.card h3{margin:0 0 4px;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.card .sub{margin:0 0 16px;color:var(--muted);font-size:13.5px}
+.grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;align-items:start}
+.stack{display:grid;gap:16px}
+.grid2>*,.stack>*,.card{min-width:0}
+.about p{margin:0 0 10px;color:#c9cdd4;font-size:14.5px}
+.about .meta{display:flex;gap:22px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;margin-top:6px;font-size:13.5px;color:var(--muted)}
+.about .meta b{color:var(--text);font-weight:600}
+
+/* таблицы */
+.tbl-wrap{overflow-x:auto;margin:0 -4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:11.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;
+  text-align:right;padding:9px 10px;border-bottom:1px solid var(--line2);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.sec td{color:var(--faint);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;
+  padding-top:16px;border-bottom:1px solid var(--line2)}
+td.lbl{color:#c9cdd4}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;background:var(--card2);
+  border:1px solid var(--line2);color:var(--muted);letter-spacing:.03em}
+.tag.L{color:var(--pos);border-color:rgba(47,210,122,.3)} .tag.S{color:var(--neg);border-color:rgba(255,84,104,.3)}
+.partial{color:var(--faint);font-size:11px;margin-left:6px}
+
+/* экспозиция */
+.expo{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.expo .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.expo .v{font-size:26px;font-weight:600;margin-top:4px}
+.expo .v.gross{color:var(--bt)} .expo .v.cash{color:var(--accent)}
+.expo-sm{display:flex;gap:22px;margin-top:14px;font-size:13.5px;color:var(--muted)}
+.expo-sm b{color:var(--text)}
+.note{margin:12px 0 0;font-size:13px;color:var(--muted)}
+
+/* рынки */
+.donut{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.donut .cv{position:relative;width:180px;height:180px;flex:none}
+.legend{display:grid;gap:9px;flex:1;min-width:150px}
+.legend div{display:flex;align-items:center;gap:10px;font-size:14px}
+.legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend span:last-child{margin-left:auto}
+
+/* графики */
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.tabs{display:inline-flex;background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:3px}
+.tabs button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 12.5px Inter,system-ui,sans-serif;
+  padding:6px 11px;border-radius:7px;cursor:pointer}
+.tabs button.on{background:var(--card2);color:var(--text);box-shadow:inset 0 0 0 1px var(--line2)}
+.series-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:2px 0 10px}
+.series-legend span{display:inline-flex;align-items:center;gap:7px}
+.series-legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.series-legend b{font-family:var(--num);font-weight:600}
+.cv-eq{position:relative;height:340px}
+.cv-dd{position:relative;height:190px}
+
+/* тепловая карта */
+.heat td{padding:7px 6px;font-size:12.5px;min-width:52px}
+.heat td.m{border-radius:6px;border-bottom:2px solid var(--bg);border-left:2px solid var(--bg)}
+
+/* сделки */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+.stat .l{font-size:11.5px;color:var(--muted)}
+.stat .v{font-size:19px;font-weight:600;margin-top:3px}
+
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;display:grid;gap:4px}
+
+@media (max-width:880px){
+  .grid2{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:520px){
+  .kpi .v{font-size:23px}
+  .expo .v{font-size:21px}
+  .card{padding:16px}
+  .cv-eq{height:280px}
+  .donut .cv{width:150px;height:150px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <div class="mark">{{ initials }}</div>
+    <div>
+      <h1>{{ cfg.brand_name }}</h1>
+      {% if cfg.tagline %}<p>{{ cfg.tagline }}</p>{% endif %}
+    </div>
+  </div>
+  <div class="status"><span class="dot"></span>{{ t.updated }} {{ updated_str }} {{ t.et }}</div>
+</header>
+
+<section class="kpis">
+  <div class="kpi"><div class="l">{{ t.kpi_total }}</div><div class="v num {{ pm.total|tone }}">{{ pm.total|pct }}</div></div>
+  <div class="kpi"><div class="l">{{ t.kpi_cagr }}</div><div class="v num {{ pm.cagr_all|tone }}">{{ pm.cagr_all|pct }}</div></div>
+  <div class="kpi"><div class="l">{{ t.kpi_mdd }}</div><div class="v num {{ pm.mdd_all|tone }}">{{ pm.mdd_all|pct }}</div></div>
+  <div class="kpi"><div class="l">{{ t.kpi_sharpe }}</div><div class="v num {{ pm.sharpe|tone }}">{{ pm.sharpe|ratio }}</div></div>
+</section>
+
+<h2>{{ t.about_title }}</h2>
+<div class="card about">
+  {% for p in about_paragraphs %}<p>{{ p }}</p>{% endfor %}
+  <div class="meta"><span>{{ t.since }}: <b>{{ inception_str }}</b></span><span>{{ t.as_of }}: <b>{{ asof_str }}</b></span></div>
+</div>
+
+<h2>{{ t.snapshot }}</h2>
+<div class="grid2">
+  <div class="card">
+    <h3>{{ t.metrics_title }}</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>{{ t.metric }}</th><th>{{ t.portfolio }}</th>{% if has_bench %}<th>{{ cfg.benchmark }}</th>{% endif %}</tr></thead>
+      <tbody>
+      {% for kind, key in metric_rows %}
+        {% if kind == 'section' %}
+          <tr class="sec"><td colspan="{{ 3 if has_bench else 2 }}">{{ key }}</td></tr>
+        {% else %}
+          <tr><td class="lbl">{{ t[key] }}</td>
+          {% for src in ([pm, bm] if has_bench else [pm]) %}
+            {% set v = src.get(key) %}
+            {% if kind == 'pct' %}<td class="num {{ v|tone }}">{{ v|pct }}</td>
+            {% elif kind == 'vol' %}<td class="num neu">{{ v|pct(1, False) }}</td>
+            {% elif kind == 'ratio' %}<td class="num {{ v|tone }}">{{ v|ratio }}</td>
+            {% elif kind == 'days' %}<td class="num {{ 'neg' if v else 'neu' }}">{{ v if v is not none else '—' }}</td>
+            {% endif %}
+          {% endfor %}
+          </tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="stack">
+    {% if snap.get('as_of') %}
+    <div class="card">
+      <h3>{{ t.exposure_title }}</h3>
+      <div class="expo">
+        <div><div class="l">{{ t.gross }}</div><div class="v num gross">{{ snap.gross|pct(1, False) }}</div></div>
+        <div><div class="l">{{ t.cash }}</div><div class="v num cash">{{ snap.cash|pct(1, False) }}</div></div>
+        <div><div class="l">{{ t.margin }}</div><div class="v num {{ 'neg' if snap.margin > 0 else 'neu' }}">{{ snap.margin|pct(1, False) }}</div></div>
+      </div>
+      <div class="expo-sm">
+        <span>{{ t.net }}: <b class="num">{{ snap.net|pct(1, False) }}</b></span>
+        <span>{{ t.n_positions }}: <b class="num">{{ snap.n_positions }}</b></span>
+      </div>
+      <p class="note">{% if snap.margin > 0 %}{{ t.lev_note.format(m=snap.margin|pct(1, False)) }}{% else %}{{ t.nolev_note }}{% endif %}</p>
+    </div>
+
+    {% if snap.markets %}
+    <div class="card">
+      <h3>{{ t.markets_title }}</h3>
+      <p class="sub">{{ t.markets_sub }}</p>
+      <div class="donut">
+        <div class="cv"><canvas id="donut" aria-label="{{ t.markets_title }}"></canvas></div>
+        <div class="legend">
+          {% for m in markets_list %}
+          <div><i style="background:{{ m.color }}"></i><span>{{ m.name }}</span><span class="num">{{ m.share|pct(1, False) }}</span></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% if cfg.show_positions and snap.get('positions') %}
+<div class="card" style="margin-top:16px">
+  <h3>{{ t.positions_title }}</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>{{ t.symbol }}</th><th>{{ t.market }}</th><th>{{ t.side }}</th><th>{{ t.weight }}</th><th>{{ t.unrealized }}</th></tr></thead>
+    <tbody>
+    {% for p in snap.positions %}
+      <tr><td><b>{{ p.symbol }}</b></td><td>{{ p.market }}</td>
+      <td><span class="tag {{ p.side }}">{{ t.long if p.side == 'L' else t.short }}</span></td>
+      <td class="num">{{ (p.weight|abs)|pct(1, False) }}</td>
+      <td class="num {{ p.unrealized_pct|tone }}">{{ p.unrealized_pct|pct }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
+
+<h2>{{ t.perf_title }}</h2>
+<div class="stack">
+  <div class="card">
+    <div class="chart-head">
+      <div><h3>{{ t.equity_title }}</h3><p class="sub">{{ t.equity_sub }}</p></div>
+      <div class="tabs" id="ranges" role="tablist"></div>
+    </div>
+    <div class="series-legend" id="eq-legend"></div>
+    <div class="cv-eq"><canvas id="equity"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h3>{{ t.dd_title }}</h3>
+    <p class="sub">{{ t.dd_sub }}</p>
+    <div class="cv-dd"><canvas id="dd"></canvas></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>{{ t.annual_title }}</h3>
+      <p class="sub">{{ t.annual_sub }}</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>{{ t.year }}</th><th>{{ t.portfolio }}</th>{% if has_bench %}<th>{{ cfg.benchmark }}</th><th>{{ t.excess.format(bench=cfg.benchmark) }}</th>{% endif %}</tr></thead>
+        <tbody>
+        {% for a in annual %}
+          <tr><td><b>{{ a.year }}</b>{% if a.partial %}<span class="partial">YTD</span>{% endif %}</td>
+          <td class="num {{ a.p|tone }}">{{ a.p|pct }}</td>
+          {% if has_bench %}<td class="num {{ a.b|tone }}">{{ a.b|pct }}</td><td class="num {{ a.x|tone }}">{{ a.x|pct }}</td>{% endif %}</tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    {% if tstats %}
+    <div class="card">
+      <h3>{{ t.trades_title }}</h3>
+      <p class="sub">{{ t.pnl_note }}</p>
+      <div class="tbl-wrap">
+      <table>
+        <tbody>
+          <tr><td class="lbl">{{ t.trades_total }}</td><td class="num">{{ tstats.total }}</td></tr>
+          <tr><td class="lbl">{{ t.trades_last30 }}</td><td class="num">{{ tstats.last30 }}</td></tr>
+          <tr><td class="lbl">{{ t.win_rate }}</td><td class="num">{{ tstats.win_rate|pct(1, False) }}</td></tr>
+          <tr><td class="lbl">{{ t.profit_factor }}</td><td class="num {{ ((tstats.profit_factor or 1) - 1)|tone }}">{{ '%.2f'|format(tstats.profit_factor) if tstats.profit_factor else '—' }}</td></tr>
+          <tr><td class="lbl">{{ t.payoff }}</td><td class="num">{{ '%.2f'|format(tstats.payoff) if tstats.payoff else '—' }}</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>{{ t.monthly_title }}</h3>
+    <div class="tbl-wrap">
+    <table class="heat">
+      <thead><tr><th>{{ t.year_col }}</th>{% for m in t.months %}<th>{{ m }}</th>{% endfor %}<th>{{ t.year }}</th></tr></thead>
+      <tbody>
+      {% for row in monthly_rows %}
+        <tr><td><b>{{ row.year }}</b></td>
+        {% for v in row.months %}
+          <td class="m num" style="{{ v|heat }}">{{ v|pct(1) if v is not none else '' }}</td>
+        {% endfor %}
+        <td class="num {{ row.total|tone }}"><b>{{ row.total|pct }}</b></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+{% if cfg.show_trades and recent %}
+<h2>{{ t.recent_trades }}</h2>
+<div class="card">
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>{{ t.date }}</th><th>{{ t.symbol }}</th><th>{{ t.market }}</th><th>{{ t.action }}</th><th>{{ t.result }}</th></tr></thead>
+    <tbody>
+    {% for r in recent %}
+      <tr><td class="num neu">{{ r.date }}</td><td><b>{{ r.symbol }}</b></td><td>{{ r.market }}</td>
+      <td><span class="tag {{ 'L' if r.side == 'BUY' else 'S' }}">{{ t.buy if r.side == 'BUY' else t.sell }}</span></td>
+      <td class="num {{ r.pnl|tone }}">{{ r.pnl|pct(2) if r.pnl is not none else '—' }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endif %}
+
+<footer>
+  <span>{{ t.foot_ann }}</span>
+  <span>{{ t.disclaimer }}</span>
+</footer>
+</div>
+
+<script id="chart-data" type="application/json">{{ chart_json|safe }}</script>
+<script id="texts" type="application/json">{{ texts_json|safe }}</script>
+<script>{{ chartjs|safe }}</script>
+<script>
+(function(){
+  const D = JSON.parse(document.getElementById('chart-data').textContent);
+  const T = JSON.parse(document.getElementById('texts').textContent);
+  const css = getComputedStyle(document.documentElement);
+  const C = k => css.getPropertyValue(k).trim();
+  const COL = {port: C('--pos'), bench: C('--bench'), bt: C('--bt'), neg: C('--neg'), grid: 'rgba(255,255,255,.05)', tick: C('--faint')};
+  Chart.defaults.color = C('--muted');
+  Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+  Chart.defaults.font.size = 11.5;
+
+  const fmt = v => v == null ? '—' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1) + '%';
+  const dates = D.dates;
+  const last = new Date(dates[dates.length - 1] + 'T00:00:00');
+
+  function startIndex(key){
+    if (key === 'ALL') return 0;
+    const d = new Date(last);
+    if (key === 'YTD') { d.setMonth(0, 1); d.setDate(0); }
+    else { const m = {'1M':1,'3M':3,'6M':6,'1Y':12}[key]; d.setMonth(d.getMonth() - m); }
+    const iso = d.toISOString().slice(0, 10);
+    let i = 0; while (i < dates.length - 1 && dates[i + 1] <= iso) i++;
+    return i;
+  }
+  function rebase(arr, i0){
+    if (!arr || !arr.length) return null;
+    let b = null, j = i0;
+    while (j < arr.length && arr[j] == null) j++;
+    if (j >= arr.length) return null;
+    b = arr[j];
+    return arr.slice(i0).map(v => v == null ? null : (v / b - 1) * 100);
+  }
+
+  /* --- кривая капитала --- */
+  const eqCtx = document.getElementById('equity');
+  const series = [
+    {key: 'port', label: T.portfolio, color: COL.port, w: 2, dash: []},
+    {key: 'bench', label: T.bench, color: COL.bench, w: 1.5, dash: []},
+    {key: 'backtest', label: T.backtest, color: COL.bt, w: 1.5, dash: [5, 4]},
+  ].filter(s => D[s.key] && D[s.key].length);
+
+  const grad = (() => { const g = eqCtx.getContext('2d').createLinearGradient(0, 0, 0, 340);
+    g.addColorStop(0, 'rgba(47,210,122,.18)'); g.addColorStop(1, 'rgba(47,210,122,0)'); return g; })();
+
+  const eq = new Chart(eqCtx, {
+    type: 'line',
+    data: {labels: [], datasets: series.map(s => ({label: s.label, data: [], borderColor: s.color, borderWidth: s.w,
+      borderDash: s.dash, pointRadius: 0, pointHoverRadius: 3, tension: 0, spanGaps: true,
+      fill: s.key === 'port' ? 'origin' : false, backgroundColor: s.key === 'port' ? grad : 'transparent'}))},
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: {duration: 250},
+      interaction: {mode: 'index', intersect: false},
+      plugins: {legend: {display: false},
+        tooltip: {backgroundColor: '#15181d', borderColor: '#2a2f37', borderWidth: 1, padding: 10,
+          callbacks: {label: c => ' ' + c.dataset.label + ': ' + fmt(c.parsed.y)}}},
+      scales: {
+        x: {grid: {display: false}, ticks: {maxTicksLimit: 7, maxRotation: 0, color: COL.tick}},
+        y: {grid: {color: COL.grid}, border: {display: false},
+            ticks: {color: COL.tick, callback: v => (v > 0 ? '+' : '') + v + '%'}}
+      }
+    }
+  });
+
+  const legend = document.getElementById('eq-legend');
+  function setRange(key){
+    const i0 = startIndex(key);
+    eq.data.labels = dates.slice(i0);
+    legend.innerHTML = '';
+    series.forEach((s, k) => {
+      const vals = rebase(D[s.key], i0) || [];
+      eq.data.datasets[k].data = vals;
+      const lastVal = [...vals].reverse().find(v => v != null);
+      const el = document.createElement('span');
+      el.innerHTML = '<i style="background:' + s.color + '"></i>' + s.label + ' <b>' + fmt(lastVal) + '</b>';
+      legend.appendChild(el);
+    });
+    eq.update();
+    document.querySelectorAll('#ranges button').forEach(b => b.classList.toggle('on', b.dataset.k === key));
+  }
+  const tabs = document.getElementById('ranges');
+  Object.entries(T.ranges).forEach(([k, label]) => {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.dataset.k = k;
+    b.onclick = () => setRange(k); tabs.appendChild(b);
+  });
+  setRange('ALL');
+
+  /* --- просадки --- */
+  function dd(arr){ let m = -Infinity; return arr.map(v => { if (v == null) return null; m = Math.max(m, v); return (v / m - 1) * 100; }); }
+  const ddSets = [{label: T.portfolio, data: dd(D.port), borderColor: COL.neg, backgroundColor: 'rgba(255,84,104,.16)', fill: 'origin', borderWidth: 1.5}];
+  if (D.bench.length) ddSets.push({label: T.bench, data: dd(D.bench), borderColor: COL.bench, backgroundColor: 'transparent', fill: false, borderWidth: 1});
+  new Chart(document.getElementById('dd'), {
+    type: 'line',
+    data: {labels: dates, datasets: ddSets.map(s => Object.assign({pointRadius: 0, pointHoverRadius: 3, tension: 0, spanGaps: true}, s))},
+    options: {responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: {mode: 'index', intersect: false},
+      plugins: {legend: {display: false}, tooltip: {backgroundColor: '#15181d', borderColor: '#2a2f37', borderWidth: 1,
+        callbacks: {label: c => ' ' + c.dataset.label + ': ' + fmt(c.parsed.y)}}},
+      scales: {x: {grid: {display: false}, ticks: {maxTicksLimit: 7, maxRotation: 0, color: COL.tick}},
+               y: {max: 0, grid: {color: COL.grid}, border: {display: false}, ticks: {color: COL.tick, callback: v => v + '%'}}}}
+  });
+
+  /* --- рынки --- */
+  const dn = document.getElementById('donut');
+  if (dn && D.markets.labels.length) {
+    new Chart(dn, {type: 'doughnut',
+      data: {labels: D.markets.labels, datasets: [{data: D.markets.values, backgroundColor: D.markets.colors, borderColor: '#111317', borderWidth: 3}]},
+      options: {cutout: '64%', responsive: true, maintainAspectRatio: false,
+        plugins: {legend: {display: false}, tooltip: {callbacks: {label: c => ' ' + c.label + ': ' + c.parsed.toFixed(1) + '%'}}}}});
+  }
+})();
+</script>
+</body>
+</html>

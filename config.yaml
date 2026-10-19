@@ -1,0 +1,61 @@
+# ------------------------------------------------------------
+#  Настройки трекера. Меняйте свободно, затем пересоберите сайт.
+# ------------------------------------------------------------
+
+# Название и подпись в шапке
+brand_name: "Systematic Portfolio"
+tagline: "Системная торговая стратегия"
+
+# Язык интерфейса: ru или en
+lang: ru
+
+# Текст блока «О трекере». Пустое значение = стандартный текст для выбранного языка.
+about_text: ""
+
+# Бенчмарк (тикер Yahoo Finance). Дивиденды учитываются (total return).
+benchmark: SPY
+
+# Безрисковая ставка для Sharpe/Sortino, годовая, в долях (0.0 = без учёта)
+risk_free_rate: 0.0
+
+# Что показывать на сайте
+show_positions: true     # таблица текущих позиций (только веса в %, без количества и сумм)
+show_trades: true        # лента последних сделок (без количества и цен)
+trades_limit: 25         # сколько последних сделок показывать
+show_backtest: true      # линия бэктеста RealTest, если есть файл data/backtest.csv
+
+# Подписи рынков по биржам IBKR (listingExchange). Чего нет в списке,
+# определяется по валюте (currency_markets), иначе выводится код биржи.
+exchange_markets:
+  NASDAQ: US
+  NYSE: US
+  ARCA: US
+  AMEX: US
+  BATS: US
+  BYX: US
+  IEX: US
+  ISLAND: US
+  NYSEARCA: US
+  NYSEAMEX: US
+  PINK: US
+  TSE: TSX
+  VENTURE: TSX
+  TSXV: TSX
+  ASX: ASX
+  LSE: LSE
+  IBIS: XETRA
+  SEHK: HKEX
+
+currency_markets:
+  USD: US
+  CAD: TSX
+  AUD: ASX
+  GBP: LSE
+  EUR: EU
+  HKD: HKEX
+
+# Цвета рынков на круговой диаграмме (остальные подберутся автоматически)
+market_colors:
+  US: "#3b82f6"
+  TSX: "#e11d48"
+  ASX: "#f59e0b"
