@@ -1,11 +1,11 @@
 {
- "as_of": "2026-11-05",
+ "as_of": "2026-11-06",
  "gross": 0.0,
  "net": 0.0,
  "long": 0.0,
  "short": 0.0,
  "cash": 0.0,
- "margin": 0.22258,
+ "margin": 0.209885,
  "n_positions": 0,
  "markets": {},
  "positions": []
